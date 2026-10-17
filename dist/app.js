@@ -3,6 +3,7 @@ const translations = {
     'nav.concept':'L’écurie','nav.ownership':'Propriété','nav.digital':'Espace propriétaire','nav.circle':'Le Cercle','nav.enquire':'Demande privée',
     'hero.eyebrow':'Propriété privée · Gestion intégrale','hero.line1':'Possédez un champion.','hero.line2':'Créez un héritage.','hero.intro':'Acquérez un faucon d’exception. Nous gérons chaque détail de sa vie, de ses performances et de son avenir — avec l’exigence d’une écurie de classe mondiale.','hero.cta':'Demander une présentation privée','hero.discover':'Découvrir l’écurie','hero.f1':'Acquisition & pedigree','hero.f2':'Entraînement & compétition','hero.f3':'Soins & traçabilité digitale',
     'concept.eyebrow':'Une nouvelle vision de la propriété','concept.title':'Plus qu’un faucon.<br />Un héritage vivant.','concept.lead':'Private Falcon Stable associe la discipline d’une écurie de course au patrimoine d’un grand haras, au service du noble art de la fauconnerie.','concept.p1t':'Vous possédez','concept.p1d':'La propriété entière ou partagée d’un faucon réel et identifié, avec des droits contractuels clairs.','concept.p2t':'Nous gérons','concept.p2d':'Entraînement, nutrition, soins vétérinaires, transport, licences, assurance et compétition.','concept.p3t':'Ensemble, nous créons de la valeur','concept.p3d':'Performance, pedigree, reproduction et vente future sont réunis dans une stratégie de long terme.',
+    'portrait.eyebrow':'Né du désert. Élevé pour l’exception.','portrait.title':'Une présence<br />au-delà de la performance.','portrait.body':'Chaque champion possède un caractère unique, une lignée traçable et une histoire digne d’être transmise.','portrait.caption':'L’ACTIF VIVANT',
     'own.eyebrow':'Le parcours propriétaire','own.title':'De la sélection<br />à la transmission.','own.intro':'Un service discret et complet, pensé autour du faucon, de son propriétaire et de la transmission familiale.','own.s1t':'Sélectionner','own.s1d':'Espèce, génétique, pedigree et potentiel sportif — évalués avec une diligence complète.','own.s2t':'Développer','own.s2d':'Protocoles individualisés d’entraînement, de nutrition et de suivi vétérinaire.','own.s3t':'Concourir','own.s3d':'Planification de saison, licences, transport et gestion des compétitions officielles.','own.s4t':'Préserver','own.s4d':'Reproduction, transmission et vente future maîtrisée pour protéger la valeur à long terme.','own.note':'La propriété, les gains de compétition et le partage des revenus sont soumis à des accords individuels, à la réglementation applicable et à une validation juridique et de conformité à la finance islamique indépendante.',
     'perf.eyebrow':'La précision dans chaque battement d’aile','perf.title':'La nature donne l’instinct.<br />Nous construisons la performance.','perf.body':'Chaque programme est calibré autour du faucon — en associant tradition, expertise et données d’entraînement mesurables.','perf.s1':'Conditionnement individuel','perf.s2':'Données biométriques en direct','perf.s3':'Optimisation en compétition',
     'digital.eyebrow':'Toujours proche. Où que vous soyez.','digital.title':'La mémoire vivante<br />de votre faucon.','digital.intro':'Un espace propriétaire privé rassemble performances, santé, localisation et provenance dans une expérience simple et raffinée.','digital.l1':'GPS en direct & activité d’entraînement','digital.l2':'Santé, vaccins & documents','digital.l3':'Vidéos, résultats & calendrier','digital.l4':'Pedigree, ADN & passeport numérique',
@@ -54,6 +55,16 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Cinematic entrance
 const loader = document.querySelector('.page-loader');
 const loaderCount = document.querySelector('.loader-count');
+const heroVideo = document.querySelector('.hero-video');
+const startHeroVideo = () => {
+  if (!heroVideo) return;
+  heroVideo.muted = true;
+  const playback = heroVideo.play();
+  if (playback) playback.catch(() => {});
+};
+startHeroVideo();
+addEventListener('pointerdown', startHeroVideo, {once:true});
+document.addEventListener('visibilitychange', () => { if (!document.hidden) startHeroVideo(); });
 let loadValue = 0;
 const loadTimer = setInterval(() => {
   loadValue = Math.min(100, loadValue + Math.ceil(Math.random() * 13));
@@ -76,6 +87,14 @@ const onScroll = () => {
     const rect = el.getBoundingClientRect();
     const travel = (innerHeight - rect.top) * .12;
     el.style.setProperty('--statement-x', `${Math.max(-80, Math.min(120, travel))}px`);
+  });
+  document.querySelectorAll('.portrait-story').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const distance = Math.max(1, rect.height - innerHeight);
+    const progress = Math.max(0, Math.min(1, -rect.top / distance));
+    el.style.setProperty('--portrait-p', progress.toFixed(3));
+    el.style.setProperty('--portrait-inset', `${(5 - progress * 5).toFixed(2)}vw`);
+    el.style.setProperty('--portrait-scale', (1.1 - progress * .1).toFixed(3));
   });
 };
 addEventListener('scroll', onScroll, {passive:true}); onScroll();
