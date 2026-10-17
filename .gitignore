@@ -3,3 +3,5 @@ Thumbs.db
 .netlify/
 tmp-frames/
 *.log
+node_modules/
+node_modules-corrupt/

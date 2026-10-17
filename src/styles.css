@@ -53,3 +53,7 @@
 @media(max-width:640px){.brand-logo{width:118px;height:54px}.site-header{height:72px}.hero-copy-visible .split-hero span,.hero-copy-visible .split-hero em{transform-origin:left bottom}}
 .site-header{background:#050505}.site-header.scrolled{background:rgba(5,5,5,.96)}
 @media(max-width:1180px){.desktop-nav,.button-small{display:none}.menu-button{display:block}.desktop-nav.open{display:flex;position:fixed;inset:0;background:#111;color:#fff;flex-direction:column;align-items:center;justify-content:center;font-family:var(--serif);font-size:34px;text-transform:none;z-index:-1}}
+
+/* React + Motion runtime refinements */
+.react-progress{position:fixed;top:0;left:0;right:0;height:2px;background:#d1ad6b;transform-origin:0 50%;z-index:250}.hero h1{font-size:clamp(58px,7.3vw,112px)}.hero-copy{overflow:visible}.principles>div{min-width:0}.principles>div article{height:100%}.tiers>article>p{color:#9d9f96;font-size:11px;line-height:1.8}.tiers>article:hover>p,.tiers>article.featured>p{color:#292821}
+@media(max-width:640px){.hero h1{font-size:43px}.hero-copy{margin-bottom:220px}.hero-intro{max-width:320px}}

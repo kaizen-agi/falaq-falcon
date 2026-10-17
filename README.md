@@ -1,18 +1,30 @@
 # Falaq Falcon
 
-Luxury bilingual landing page for a fully managed falcon ownership concept in the UAE.
+Luxury bilingual experience for a fully managed falcon ownership concept in the UAE.
 
-## Local preview
+## Technology
 
-Serve the `dist` directory with any static server, for example:
+- React 19
+- Vite 7 on Node.js 20+
+- Motion for React
+- Responsive CSS with reduced-motion support
+
+## Local development
 
 ```bash
-npx serve dist
+npm install
+npm run dev
 ```
 
-## Netlify
+Create the optimized production build with:
 
-The repository includes `netlify.toml`; Netlify will publish the `dist` directory with no build command required. The private enquiry form uses Netlify Forms and becomes active after deployment.
+```bash
+npm run build
+```
+
+## Deployment
+
+The production output is generated in `dist/` and is published to GitHub Pages. The same project is Netlify-ready using the included `netlify.toml` configuration.
 
 ## Content status
 
