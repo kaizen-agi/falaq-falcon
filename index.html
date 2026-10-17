@@ -17,6 +17,13 @@
     <script src="/app.js" defer></script>
   </head>
   <body>
+    <div class="page-loader" aria-hidden="true">
+      <div class="loader-mark"><svg viewBox="0 0 64 64"><path d="M8 39c15-2 18-12 25-27 1 12 2 18 8 24 4 4 8 6 15 8-11 2-18 0-24-5-4 7-11 11-23 12 6-4 9-8 10-13-4 1-7 1-11 1Z" /></svg></div>
+      <p>PRIVATE FALCON STABLE</p><span class="loader-count">00</span>
+      <div class="loader-line"><i></i></div>
+    </div>
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+    <div class="cursor" aria-hidden="true"><span>VIEW</span></div>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header" id="top">
       <a class="brand" href="#top" aria-label="Private Falcon Stable, home">
@@ -41,11 +48,11 @@
 
     <main id="main">
       <section class="hero">
-        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-media" data-parallax="0.18" aria-hidden="true"></div>
         <div class="hero-grain" aria-hidden="true"></div>
         <div class="hero-copy reveal">
           <p class="eyebrow" data-i18n="hero.eyebrow">Private ownership · Fully managed</p>
-          <h1><span data-i18n="hero.line1">Own a champion.</span><em data-i18n="hero.line2">Shape a legacy.</em></h1>
+          <h1 class="split-hero"><span data-i18n="hero.line1">Own a champion.</span><em data-i18n="hero.line2">Shape a legacy.</em></h1>
           <p class="hero-intro" data-i18n="hero.intro">Acquire an exceptional falcon. We manage every detail of its life, performance and future — with the care of a world-class stable.</p>
           <div class="hero-actions">
             <a class="button button-gold" href="#enquire" data-i18n="hero.cta">Request a private introduction</a>
@@ -58,6 +65,10 @@
           <div><span>03</span><p data-i18n="hero.f3">Care & digital traceability</p></div>
         </div>
       </section>
+
+      <div class="motion-rail" aria-hidden="true">
+        <div class="rail-track"><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i></div>
+      </div>
 
       <section class="manifesto section" id="concept">
         <div class="section-index">01 / 05</div>
@@ -103,6 +114,29 @@
         <p class="disclaimer" data-i18n="own.note">Ownership, competition rewards and revenue sharing are subject to individual agreements, applicable regulation and independent legal and Shariah-compliance review.</p>
       </section>
 
+      <section class="performance-story" id="performance">
+        <div class="performance-sticky">
+          <div class="performance-visual cursor-view">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div>
+            <div class="falcon-silhouette"><svg viewBox="0 0 300 220" aria-hidden="true"><path d="M17 108c53-7 80-36 109-96 3 34 8 54 23 71 16-17 39-31 78-39-22 26-36 48-35 70 24 16 51 26 91 33-48 14-91 8-129-23-26 42-66 64-125 69 31-20 49-44 55-73-25 1-46-3-67-12Z" /></svg></div>
+            <div class="radar-sweep"></div>
+            <div class="telemetry t-one"><small>ALTITUDE</small><strong data-counter="184">0</strong><span>M</span></div>
+            <div class="telemetry t-two"><small>VELOCITY</small><strong data-counter="84">0</strong><span>KM/H</span></div>
+            <div class="telemetry t-three"><small>READINESS</small><strong data-counter="92">0</strong><span>%</span></div>
+          </div>
+          <div class="performance-copy">
+            <p class="eyebrow" data-i18n="perf.eyebrow">Precision in every wingbeat</p>
+            <h2 class="words-reveal" data-i18n="perf.title">Nature gives the instinct.<br />We build the performance.</h2>
+            <p data-i18n="perf.body">Every programme is calibrated around the individual falcon — combining tradition, specialist care and measurable training intelligence.</p>
+            <div class="performance-steps">
+              <div><span>01</span><p data-i18n="perf.s1">Individual conditioning</p></div>
+              <div><span>02</span><p data-i18n="perf.s2">Live biometric insight</p></div>
+              <div><span>03</span><p data-i18n="perf.s3">Competition optimisation</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="digital section" id="digital">
         <div class="section-index">03 / 05</div>
         <div class="digital-copy">
@@ -116,7 +150,7 @@
             <li data-i18n="digital.l4">Pedigree, DNA & digital passport</li>
           </ul>
         </div>
-        <div class="dashboard-shell reveal" aria-label="Illustrative owner portal preview">
+        <div class="dashboard-shell reveal tilt-card cursor-view" aria-label="Illustrative owner portal preview">
           <div class="dash-bar"><span class="dash-brand">PFS / OWNER</span><span class="live"><i></i> LIVE</span><span>•••</span></div>
           <div class="dash-profile">
             <div class="falcon-avatar"></div>
@@ -140,6 +174,10 @@
           <p class="demo-label">CONCEPT INTERFACE · FOR ILLUSTRATION</p>
         </div>
       </section>
+
+      <div class="statement" aria-label="Brand statement">
+        <p class="statement-line"><span>ONE FALCON.</span><span>ONE BLOODLINE.</span><span>ONE LEGACY.</span></p>
+      </div>
 
       <section class="circle section" id="circle">
         <div class="section-index light">04 / 05</div>

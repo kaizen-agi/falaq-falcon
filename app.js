@@ -4,6 +4,7 @@ const translations = {
     'hero.eyebrow':'Propriété privée · Gestion intégrale','hero.line1':'Possédez un champion.','hero.line2':'Créez un héritage.','hero.intro':'Acquérez un faucon d’exception. Nous gérons chaque détail de sa vie, de ses performances et de son avenir — avec l’exigence d’une écurie de classe mondiale.','hero.cta':'Demander une présentation privée','hero.discover':'Découvrir l’écurie','hero.f1':'Acquisition & pedigree','hero.f2':'Entraînement & compétition','hero.f3':'Soins & traçabilité digitale',
     'concept.eyebrow':'Une nouvelle vision de la propriété','concept.title':'Plus qu’un faucon.<br />Un héritage vivant.','concept.lead':'Private Falcon Stable associe la discipline d’une écurie de course au patrimoine d’un grand haras, au service du noble art de la fauconnerie.','concept.p1t':'Vous possédez','concept.p1d':'La propriété entière ou partagée d’un faucon réel et identifié, avec des droits contractuels clairs.','concept.p2t':'Nous gérons','concept.p2d':'Entraînement, nutrition, soins vétérinaires, transport, licences, assurance et compétition.','concept.p3t':'Ensemble, nous créons de la valeur','concept.p3d':'Performance, pedigree, reproduction et vente future sont réunis dans une stratégie de long terme.',
     'own.eyebrow':'Le parcours propriétaire','own.title':'De la sélection<br />à la transmission.','own.intro':'Un service discret et complet, pensé autour du faucon, de son propriétaire et de la transmission familiale.','own.s1t':'Sélectionner','own.s1d':'Espèce, génétique, pedigree et potentiel sportif — évalués avec une diligence complète.','own.s2t':'Développer','own.s2d':'Protocoles individualisés d’entraînement, de nutrition et de suivi vétérinaire.','own.s3t':'Concourir','own.s3d':'Planification de saison, licences, transport et gestion des compétitions officielles.','own.s4t':'Préserver','own.s4d':'Reproduction, transmission et vente future maîtrisée pour protéger la valeur à long terme.','own.note':'La propriété, les gains de compétition et le partage des revenus sont soumis à des accords individuels, à la réglementation applicable et à une validation juridique et de conformité à la finance islamique indépendante.',
+    'perf.eyebrow':'La précision dans chaque battement d’aile','perf.title':'La nature donne l’instinct.<br />Nous construisons la performance.','perf.body':'Chaque programme est calibré autour du faucon — en associant tradition, expertise et données d’entraînement mesurables.','perf.s1':'Conditionnement individuel','perf.s2':'Données biométriques en direct','perf.s3':'Optimisation en compétition',
     'digital.eyebrow':'Toujours proche. Où que vous soyez.','digital.title':'La mémoire vivante<br />de votre faucon.','digital.intro':'Un espace propriétaire privé rassemble performances, santé, localisation et provenance dans une expérience simple et raffinée.','digital.l1':'GPS en direct & activité d’entraînement','digital.l2':'Santé, vaccins & documents','digital.l3':'Vidéos, résultats & calendrier','digital.l4':'Pedigree, ADN & passeport numérique',
     'circle.eyebrow':'Adhésion, sur invitation','circle.title':'Choisissez votre place<br />dans l’écurie.','circle.intro':'Chaque relation est sur mesure. Votre niveau de membre définit vos accès, vos services et vos expériences privées.','circle.t1l':'Falcon Member','circle.t1t':'Commencez votre histoire.','circle.t1a':'Un faucon sous gestion','circle.t1b':'Espace propriétaire privé','circle.t1c':'Visites sur rendez-vous','circle.t2l':'Elite Falcon Owner','circle.t2t':'Créez votre écurie.','circle.t2a':'Portefeuille de plusieurs faucons','circle.t2b':'Salon privé & événements','circle.t2c':'Programme compétition prioritaire','circle.t3l':'Royal Falcon Circle','circle.t3t':'Fondez une dynastie.','circle.t3a':'Conciergerie dédiée','circle.t3b':'Voyages & compétitions privées','circle.t3c':'Accès reproduction d’élite',
     'heritage.quote':'« L’héritage n’est pas ce que nous gardons derrière nous. C’est ce que nous plaçons entre les mains de la prochaine génération. »','heritage.eyebrow':'Enraciné dans la tradition. Fondé sur la confiance.','heritage.title':'Propriété réelle.<br />Transparence totale.','heritage.body':'Chaque faucon est un actif réel, avec une identité vérifiée, des soins documentés et une provenance complète. Le modèle repose sur des contrats transparents — jamais sur le hasard ou la spéculation.','heritage.t1':'Passeport numérique','heritage.t2':'Pedigree traçable','heritage.t3':'Validation indépendante',
@@ -49,3 +50,73 @@ document.querySelectorAll('.journey-card').forEach(card => card.addEventListener
 }));
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Cinematic entrance
+const loader = document.querySelector('.page-loader');
+const loaderCount = document.querySelector('.loader-count');
+let loadValue = 0;
+const loadTimer = setInterval(() => {
+  loadValue = Math.min(100, loadValue + Math.ceil(Math.random() * 13));
+  loaderCount.textContent = String(loadValue).padStart(2, '0');
+  loader.style.setProperty('--loaded', `${loadValue}%`);
+  if (loadValue === 100) {
+    clearInterval(loadTimer);
+    setTimeout(() => { loader.classList.add('done'); document.body.classList.add('loaded'); }, 180);
+  }
+}, 35);
+
+// Scroll-driven movement
+const root = document.documentElement;
+const onScroll = () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  root.style.setProperty('--scroll', max > 0 ? scrollY / max : 0);
+  root.style.setProperty('--hero-y', `${scrollY * .16}px`);
+  root.style.setProperty('--rail-x', `${-(scrollY * .12)}px`);
+  document.querySelectorAll('.statement-line').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const travel = (innerHeight - rect.top) * .12;
+    el.style.setProperty('--statement-x', `${Math.max(-80, Math.min(120, travel))}px`);
+  });
+};
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+// Word-by-word reveal
+document.querySelectorAll('.words-reveal').forEach(el => {
+  const nodes = el.innerHTML.split(/(<br\s*\/?>|\s+)/);
+  el.innerHTML = nodes.map(part => part.startsWith('<br') ? part : /^\s+$/.test(part) ? part : `<span class="word"><i>${part}</i></span>`).join('');
+});
+const wordObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+  if(entry.isIntersecting){ entry.target.classList.add('words-visible'); wordObserver.unobserve(entry.target); }
+}), {threshold:.3});
+document.querySelectorAll('.words-reveal').forEach(el => wordObserver.observe(el));
+
+// Live telemetry counters
+const countObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+  if(!entry.isIntersecting) return;
+  entry.target.querySelectorAll('[data-counter]').forEach(node => {
+    const target = Number(node.dataset.counter); let start = 0;
+    const tick = () => { start += Math.max(1, Math.ceil((target-start)/10)); node.textContent = Math.min(start,target); if(start<target) requestAnimationFrame(tick); };
+    tick();
+  }); countObserver.unobserve(entry.target);
+}), {threshold:.4});
+document.querySelectorAll('.performance-visual').forEach(el => countObserver.observe(el));
+
+// Pointer depth, custom cursor and magnetic calls to action
+if (matchMedia('(pointer:fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const cursor = document.querySelector('.cursor'); let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my;
+  addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  const drawCursor = () => { cx += (mx-cx)*.16; cy += (my-cy)*.16; cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`; requestAnimationFrame(drawCursor); }; drawCursor();
+  document.querySelectorAll('a,button,.cursor-view').forEach(el => {
+    el.addEventListener('mouseenter',()=>cursor.classList.add(el.classList.contains('cursor-view')?'view':'active'));
+    el.addEventListener('mouseleave',()=>cursor.classList.remove('active','view'));
+  });
+  document.querySelectorAll('.button').forEach(el => el.addEventListener('mousemove', e => {
+    const r=el.getBoundingClientRect(); el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.09}px,${(e.clientY-r.top-r.height/2)*.14}px)`;
+  }));
+  document.querySelectorAll('.button').forEach(el => el.addEventListener('mouseleave',()=>el.style.transform=''));
+  document.querySelectorAll('.tilt-card').forEach(card => card.addEventListener('mousemove', e => {
+    const r=card.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width-.5; const y=(e.clientY-r.top)/r.height-.5;
+    card.style.setProperty('--rx',`${-y*5}deg`); card.style.setProperty('--ry',`${x*7}deg`);
+  }));
+  document.querySelectorAll('.tilt-card').forEach(card => card.addEventListener('mouseleave',()=>{card.style.setProperty('--rx','0deg');card.style.setProperty('--ry','0deg');}));
+}
