@@ -57,3 +57,6 @@
 /* React + Motion runtime refinements */
 .react-progress{position:fixed;top:0;left:0;right:0;height:2px;background:#d1ad6b;transform-origin:0 50%;z-index:250}.hero h1{font-size:clamp(58px,7.3vw,112px)}.hero-copy{overflow:visible}.principles>div{min-width:0}.principles>div article{height:100%}.tiers>article>p{color:#9d9f96;font-size:11px;line-height:1.8}.tiers>article:hover>p,.tiers>article.featured>p{color:#292821}
 @media(max-width:640px){.hero h1{font-size:43px}.hero-copy{margin-bottom:220px}.hero-intro{max-width:320px}}
+
+/* Compact falcon-head cursor; the beak is the click hotspot. */
+@media(pointer:fine){html,body{cursor:url('./assets/falcon-head-cursor.svg') 2 11,default}a,button,input,select,textarea,summary,[role="button"]{cursor:url('./assets/falcon-head-cursor.svg') 2 11,pointer}}
