@@ -1,4 +1,4 @@
-# Private Falcon Stable
+# Falaq Falcon
 
 Luxury bilingual landing page for a fully managed falcon ownership concept in the UAE.
 
