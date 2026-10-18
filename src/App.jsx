@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react'
 
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${name}`
@@ -85,6 +85,41 @@ function FalconCards(){
   return <div className="falcon-owner-cards">{cards.map((card,i)=><motion.figure key={card[0]} initial={{opacity:0,y:42}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:i*.12,ease:[.16,1,.3,1]}} whileHover={{y:-10,rotate:i===0?-1:1}}><img src={asset(card[0])} alt={card[1]}/></motion.figure>)}</div>
 }
 
+function LuxuryTrainingVideo(){
+  const frameRef=useRef(null),videoRef=useRef(null)
+  const [active,setActive]=useState(false),[playing,setPlaying]=useState(false)
+  useEffect(()=>{
+    const node=frameRef.current
+    if(!node)return
+    const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setActive(true);observer.disconnect()}},{rootMargin:'320px 0px'})
+    observer.observe(node)
+    return()=>observer.disconnect()
+  },[])
+  useEffect(()=>{
+    if(!active||!videoRef.current)return
+    const video=videoRef.current
+    video.load()
+    video.play().catch(()=>setPlaying(false))
+  },[active])
+  const togglePlayback=()=>{
+    const video=videoRef.current
+    if(!video)return
+    if(video.paused)video.play().catch(()=>setPlaying(false));else video.pause()
+  }
+  return <Reveal><div className="luxury-training-player" ref={frameRef}>
+    <video ref={videoRef} muted loop playsInline autoPlay={active} preload="none" poster={asset('falaq-training-poster.jpg')} onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)} aria-label="Falaq Falcon training session">
+      {active&&<source src={asset('falaq-training-1.mp4')} type="video/mp4"/>}
+    </video>
+    <div className="training-film-shade"/>
+    <div className="training-film-top"><span>FALAQ / TRAINING</span><span><i/> FIELD 01</span></div>
+    <div className="training-film-controls">
+      <button type="button" onClick={togglePlayback} aria-label={playing?'Pause training film':'Play training film'}>{playing?'Ⅱ':'▶'}</button>
+      <div><strong>DESERT CONDITIONING</strong><span>{active?'MUTED · 00:12':'READY · LAZY LOAD'}</span></div>
+      <span className={`training-film-progress ${playing?'is-playing':''}`}><i/></span>
+    </div>
+  </div></Reveal>
+}
+
 const radarProfiles=[
   {name:'Velocity',values:[90,84,78,88,94]},
   {name:'Endurance',values:[82,76,95,86,91]},
@@ -118,7 +153,7 @@ function App(){
     <Hero t={t}/>
     <section className="credibility-strip">{t.pillars.map((x,i)=><span key={x}>{x}{i<t.pillars.length-1&&<i>✦</i>}</span>)}</section>
     <div className="motion-rail"><motion.div className="rail-track" animate={{x:[0,-650]}} transition={{duration:18,repeat:Infinity,ease:'linear'}}><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i><span>HERITAGE IN MOTION</span></motion.div></div>
-    <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><p className="eyebrow dark">{t.conceptK}</p><Reveal><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><article><span>0{i+1}</span><h3>{s[0]}</h3><p>{s[1]}</p></article></Reveal>)}</div></section>
+    <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><LuxuryTrainingVideo/><Reveal className="manifesto-copy"><p className="eyebrow dark">{t.conceptK}</p><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><article><span>0{i+1}</span><h3>{s[0]}</h3><p>{s[1]}</p></article></Reveal>)}</div></section>
     <section className="portrait-story"><div className="portrait-sticky"><div className="portrait-image-wrap"><img src={asset('hero-falcon.webp')} alt="Falcon overlooking the Arabian desert"/></div><div className="portrait-shade"/><div className="portrait-copy"><SectionTitle kicker={t.connectionK} title={t.connectionT} light/><p>{t.connectionP}</p><div className="connection-moments">{t.connectionMoments.map((m,i)=><div key={m[0]}><span>0{i+1}</span><strong>{m[0]}</strong><p>{m[1]}</p></div>)}</div></div></div></section>
     <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><SectionTitle kicker={t.falconsK} title={t.falconsT}/><p>{t.falconsP}</p></div><div className="falcon-profiles">{t.profiles.map((p,i)=><motion.article className="profile-card" key={p[0]} initial={{opacity:0,y:50}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.1}} whileHover={{y:-12}}><div className={`profile-photo profile-photo-${profileClasses[i]}`}><span>{p[0]}</span></div><p>0{i+1} / PRIVATE PROFILE</p><h3>{p[1]}</h3><p>{p[2]}</p></motion.article>)}</div><a className="button button-ink" href="#enquire">{t.consult}</a></section>
     <section className="ownership section" id="ownership"><div className="section-index light">03 / 07</div><div className="ownership-heading"><p className="eyebrow">{t.journeyK}</p><h2>{t.journeyT}</h2><p>{t.clarityP}</p></div><div className="journey">{t.journey.map((s,i)=><motion.article className="journey-card" key={s[0]} whileHover={{y:-14}}><div className="journey-top"><span>0{i+1}</span><i>↗</i></div><h3>{s[0]}</h3><p>{s[1]}</p></motion.article>)}</div></section>
