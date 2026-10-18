@@ -89,3 +89,9 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 .performance-axis-labels text{fill:#d5b778;font:600 10px var(--sans);letter-spacing:.12em}
 .performance-radar-simple .falcon-head-medallion{position:absolute;width:27%;inset:50% auto auto 50%;transform:translate(-50%,-50%);border:2px solid #d5b778;box-shadow:0 12px 36px rgba(0,0,0,.55);z-index:3}
 @media(max-width:640px){.performance-radar-simple{width:88vw}.performance-axis-labels text{font-size:9px;letter-spacing:.08em}.performance-radar-simple .falcon-head-medallion{width:29%}}
+
+/* More restrained typography for the transition statement and following section. */
+.statement{height:160px}
+.statement-line span{font-size:clamp(36px,5vw,72px);line-height:.95}
+.circle-head h2{font-size:clamp(42px,4vw,64px);line-height:.96}
+@media(max-width:640px){.statement{height:96px}.statement-line span{font-size:34px}.circle-head h2{font-size:38px}}
