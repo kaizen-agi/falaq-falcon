@@ -120,3 +120,12 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 .portrait-image-wrap img{object-position:72% 10%}
 @media(max-width:980px){.portrait-image-wrap img{object-position:70% 8%}}
 @media(max-width:640px){.portrait-image-wrap img{object-position:72% 6%}}
+
+/* Animated three-profile spider-graph carousel. */
+.performance-score-dots circle{fill:#f0cc7c;stroke:#11120f;stroke-width:2;filter:drop-shadow(0 0 8px rgba(240,204,124,.8))}
+.radar-carousel-controls{position:absolute;top:1rem;left:1rem;z-index:5;display:flex;align-items:center;gap:.65rem;padding:.55rem .65rem;background:rgba(12,13,11,.76);border:1px solid rgba(213,183,120,.2);backdrop-filter:blur(10px)}
+.radar-carousel-controls>button{width:30px;height:30px;border:1px solid rgba(213,183,120,.25);background:transparent;color:#d5b778;cursor:pointer}
+.radar-carousel-controls>div{min-width:105px}.radar-carousel-controls span{display:block;color:#7f8078;font-size:6px;letter-spacing:.16em}.radar-carousel-controls strong{display:block;color:#f2eee4;font:500 16px var(--serif);line-height:1.1;text-transform:uppercase}
+.radar-carousel-controls nav{display:flex;gap:5px;margin-top:5px}.radar-carousel-controls nav button{width:20px;height:2px;padding:0;border:0;background:#45463f;cursor:pointer;transition:.35s}.radar-carousel-controls nav button.active{background:#d5b778;width:30px;box-shadow:0 0 8px rgba(213,183,120,.55)}
+@media(max-width:640px){.radar-carousel-controls{top:.3rem;left:50%;transform:translateX(-50%);padding:.4rem .5rem}.radar-carousel-controls>button{width:26px;height:26px}.radar-carousel-controls>div{min-width:92px}.radar-carousel-controls strong{font-size:14px}.radar-carousel-controls nav button{width:16px}.radar-carousel-controls nav button.active{width:24px}}
+@media(prefers-reduced-motion:reduce){.radar-carousel-controls nav button{transition:none}}
