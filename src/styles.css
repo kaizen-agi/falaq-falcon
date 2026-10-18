@@ -95,3 +95,15 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 .statement-line span{font-size:clamp(36px,5vw,72px);line-height:.95}
 .circle-head h2{font-size:clamp(42px,4vw,64px);line-height:.96}
 @media(max-width:640px){.statement{height:96px}.statement-line span{font-size:34px}.circle-head h2{font-size:38px}}
+
+/* Strategy content: ownership relationship and transparent dossier details. */
+.connection-moments{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:2.2rem;background:rgba(255,255,255,.2);max-width:900px}
+.connection-moments>div{min-height:118px;padding:1rem 1.1rem;background:rgba(9,10,9,.58);backdrop-filter:blur(10px)}
+.connection-moments span{display:block;color:#d5b778;font:500 11px var(--serif)}
+.connection-moments strong{display:block;margin:.35rem 0;font:500 17px var(--serif)}
+.connection-moments p{margin:0;color:rgba(255,255,255,.62);font-size:10px;line-height:1.55}
+.clarity-facts{margin-top:2.2rem;border-top:1px solid rgba(18,19,17,.2)}
+.clarity-facts>div{display:grid;grid-template-columns:minmax(120px,.7fr) 1.3fr;gap:1.2rem;padding:.8rem 0;border-bottom:1px solid rgba(18,19,17,.2)}
+.clarity-facts strong{font:600 9px var(--sans);text-transform:uppercase;letter-spacing:.1em;color:#705a35}
+.clarity-facts span{color:#4e4c45;font-size:11px}
+@media(max-width:640px){.portrait-copy{bottom:6vh}.portrait-copy h2{font-size:45px}.portrait-copy>p:last-of-type{margin-top:1.2rem}.connection-moments{grid-template-columns:1fr;margin-top:1.2rem}.connection-moments>div{min-height:0;padding:.7rem .8rem}.connection-moments p{display:none}.clarity-facts>div{grid-template-columns:1fr;gap:.25rem}.tiers>article>p{display:none}}
