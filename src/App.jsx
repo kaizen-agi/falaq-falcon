@@ -74,14 +74,14 @@ function Hero({t}) {
       <motion.p className="hero-intro" variants={{hidden:{opacity:0},show:{opacity:1,transition:{duration:1}}}}>{t.intro}</motion.p>
       <motion.div className="hero-actions" variants={{hidden:{opacity:0},show:{opacity:1}}}><motion.a whileHover={{y:-4}} className="button button-gold hero-cta-glow" href="#enquire">{t.consult}</motion.a><a className="text-link" href="#concept">{t.explore}<b>↓</b></a></motion.div>
     </motion.div>}</AnimatePresence>
-    <AnimatePresence>{showCards&&<motion.div className="hero-card-popups" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.18}}}}>{[['card-falaq-falcon.jpg','Shaheen'],['card-falaq-falcon-2.jpg','Layth']].map((card,index)=><motion.figure key={card[0]} variants={{hidden:{opacity:0,y:90,scale:.72,rotate:index===0?-8:8},show:{opacity:1,y:0,scale:1,rotate:index===0?-3:3,transition:{type:'spring',stiffness:110,damping:14}}}} whileHover={{y:-12,scale:1.04,rotate:0}}><img src={asset(card[0])} alt={`${card[1]} falcon card`}/></motion.figure>)}</motion.div>}</AnimatePresence>
+    <AnimatePresence>{showCards&&<motion.div className="hero-card-popups" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.18}}}}>{[['card-falaq-falcon-transparent.png','Shaheen'],['card-falaq-falcon-2-transparent.png','Layth']].map((card,index)=><motion.figure key={card[0]} variants={{hidden:{opacity:0,y:90,scale:.72,rotate:index===0?-8:8},show:{opacity:1,y:0,scale:1,rotate:index===0?-3:3,transition:{type:'spring',stiffness:110,damping:14}}}} whileHover={{y:-12,scale:1.04,rotate:0}}><img src={asset(card[0])} alt={`${card[1]} falcon card`}/></motion.figure>)}</motion.div>}</AnimatePresence>
   </section>
 }
 
 const SectionTitle=({kicker,title,light=false})=><><p className={`eyebrow ${light?'':'dark'}`}>{kicker}</p><h2>{title}</h2></>
 
 function FalconCards(){
-  const cards=[['card-falaq-falcon.jpg','Shaheen falcon performance card'],['card-falaq-falcon-2.jpg','Layth falcon performance card']]
+  const cards=[['card-falaq-falcon-transparent.png','Shaheen falcon performance card'],['card-falaq-falcon-2-transparent.png','Layth falcon performance card']]
   return <div className="falcon-owner-cards">{cards.map((card,i)=><motion.figure key={card[0]} initial={{opacity:0,y:42}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:i*.12,ease:[.16,1,.3,1]}} whileHover={{y:-10,rotate:i===0?-1:1}}><img src={asset(card[0])} alt={card[1]}/></motion.figure>)}</div>
 }
 
