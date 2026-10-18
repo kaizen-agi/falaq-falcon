@@ -63,18 +63,18 @@ function Header({lang,setLang,menu,setMenu,t}) {
 }
 
 function Hero({t}) {
-  const [show,setShow]=useState(false)
+  const [show,setShow]=useState(false),[showCards,setShowCards]=useState(false)
   const {scrollY}=useScroll(); const y=useTransform(scrollY,[0,900],[0,150])
-  useEffect(()=>{ const timer=setTimeout(()=>setShow(true),7000); return()=>clearTimeout(timer) },[])
+  useEffect(()=>{const cardTimer=setTimeout(()=>setShowCards(true),6000);const copyTimer=setTimeout(()=>setShow(true),7000);return()=>{clearTimeout(cardTimer);clearTimeout(copyTimer)}},[])
   return <section className="hero" id="top">
     <motion.div className="hero-media" style={{y}}><video className="hero-video" autoPlay muted loop playsInline preload="metadata" poster={asset('falaq-hero-poster.jpg')}><source src={asset('falaq-hero.mp4')} type="video/mp4" /></video></motion.div><div className="hero-grain"/>
     <AnimatePresence>{show&&<motion.div className="hero-copy" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.13}}}}>
       <motion.p className="eyebrow" variants={{hidden:{opacity:0},show:{opacity:1}}}>{t.eyebrow}</motion.p>
       <h1 className="split-hero"><motion.span variants={{hidden:{opacity:0,y:120},show:{opacity:1,y:0,transition:{duration:1.15,ease:[.16,1,.3,1]}}}}>{t.hero1}</motion.span><motion.em variants={{hidden:{opacity:0,y:120},show:{opacity:1,y:0,transition:{duration:1.2,ease:[.16,1,.3,1]}}}}>{t.hero2}</motion.em></h1>
       <motion.p className="hero-intro" variants={{hidden:{opacity:0},show:{opacity:1,transition:{duration:1}}}}>{t.intro}</motion.p>
-      <motion.div className="hero-actions" variants={{hidden:{opacity:0},show:{opacity:1}}}><motion.a whileHover={{y:-4}} className="button button-gold" href="#enquire">{t.consult}</motion.a><a className="text-link" href="#concept">{t.explore}<b>↓</b></a></motion.div>
+      <motion.div className="hero-actions" variants={{hidden:{opacity:0},show:{opacity:1}}}><motion.a whileHover={{y:-4}} className="button button-gold hero-cta-glow" href="#enquire">{t.consult}</motion.a><a className="text-link" href="#concept">{t.explore}<b>↓</b></a></motion.div>
     </motion.div>}</AnimatePresence>
-    <div className="hero-foot">{t.pillars.slice(0,3).map((x,i)=><div key={x}><span>0{i+1}</span><p>{x}</p></div>)}</div>
+    <AnimatePresence>{showCards&&<motion.div className="hero-card-popups" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.18}}}}>{[['card-falaq-falcon.jpg','Shaheen'],['card-falaq-falcon-2.jpg','Layth']].map((card,index)=><motion.figure key={card[0]} variants={{hidden:{opacity:0,y:90,scale:.72,rotate:index===0?-8:8},show:{opacity:1,y:0,scale:1,rotate:index===0?-3:3,transition:{type:'spring',stiffness:110,damping:14}}}} whileHover={{y:-12,scale:1.04,rotate:0}}><img src={asset(card[0])} alt={`${card[1]} falcon card`}/></motion.figure>)}</motion.div>}</AnimatePresence>
   </section>
 }
 

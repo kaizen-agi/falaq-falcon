@@ -129,3 +129,15 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 .radar-carousel-controls nav{display:flex;gap:5px;margin-top:5px}.radar-carousel-controls nav button{width:20px;height:2px;padding:0;border:0;background:#45463f;cursor:pointer;transition:.35s}.radar-carousel-controls nav button.active{background:#d5b778;width:30px;box-shadow:0 0 8px rgba(213,183,120,.55)}
 @media(max-width:640px){.radar-carousel-controls{top:.3rem;left:50%;transform:translateX(-50%);padding:.4rem .5rem}.radar-carousel-controls>button{width:26px;height:26px}.radar-carousel-controls>div{min-width:92px}.radar-carousel-controls strong{font-size:14px}.radar-carousel-controls nav button{width:16px}.radar-carousel-controls nav button.active{width:24px}}
 @media(prefers-reduced-motion:reduce){.radar-carousel-controls nav button{transition:none}}
+
+/* Six-second hero card reveal and luminous primary CTA. */
+.hero-card-popups{position:absolute;left:2.5vw;bottom:1.4rem;z-index:4;display:flex;align-items:flex-end;gap:.55rem;pointer-events:none}
+.hero-card-popups figure{width:112px;margin:0;pointer-events:auto;filter:drop-shadow(0 18px 24px rgba(0,0,0,.5));transform-origin:center bottom}
+.hero-card-popups figure:nth-child(2){margin-left:-1.1rem}
+.hero-card-popups img{display:block;width:100%;height:auto;border-radius:12px}
+.hero-cta-glow{position:relative;box-shadow:0 0 0 0 rgba(213,183,120,.7),0 0 28px rgba(213,183,120,.42);animation:ctaGlow 2.2s ease-in-out infinite}
+.hero-cta-glow:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(213,183,120,.45);opacity:.75;animation:ctaRing 2.2s ease-out infinite;pointer-events:none}
+@keyframes ctaGlow{50%{box-shadow:0 0 0 8px rgba(213,183,120,0),0 0 42px rgba(213,183,120,.72)}}
+@keyframes ctaRing{to{inset:-15px;opacity:0}}
+@media(max-width:640px){.hero-card-popups{left:4vw;bottom:5.2rem;gap:.2rem}.hero-card-popups figure{width:72px}.hero-card-popups figure:nth-child(2){margin-left:-.75rem}.hero-card-popups img{border-radius:8px}}
+@media(prefers-reduced-motion:reduce){.hero-card-popups figure{transform:none!important}.hero-cta-glow,.hero-cta-glow:after{animation:none}}
