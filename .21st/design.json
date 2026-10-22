@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "direction": "Editorial Arabian luxury with restrained gold-on-ink interaction design",
+  "decisions": [
+    "Use the existing fixed spider graph as a performance frame rather than changing metrics between slides.",
+    "The performance carousel contains exactly two falcon portrait banners with explicit names, visible arrows, and a two-tab navigation bar.",
+    "Portrait transitions use a soft crossfade and scale while navigation remains high contrast and keyboard accessible."
+  ]
+}
