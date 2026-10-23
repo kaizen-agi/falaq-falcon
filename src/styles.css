@@ -280,3 +280,14 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
   .clarity-fact-arrow{grid-column:3;grid-row:1}
 }
 @media(prefers-reduced-motion:reduce){.clarity-facts-head i{animation:none;transform:none}.clarity-facts-21st>.clarity-fact{transform:none!important;transition:none}}
+
+/* Reserve a dedicated footer rail so the falcon selector never covers radar labels. */
+.performance-radar-simple.radar-carousel{padding-bottom:104px}
+.performance-radar-simple.radar-carousel>svg{height:100%;align-self:start}
+.performance-radar-simple.radar-carousel .radar-portrait{top:calc(50% - 52px)}
+.performance-radar-simple.radar-carousel .radar-carousel-controls{bottom:.65rem}
+@media(max-width:640px){
+  .performance-radar-simple.radar-carousel{padding-bottom:86px}
+  .performance-radar-simple.radar-carousel .radar-portrait{top:calc(50% - 43px)}
+  .performance-radar-simple.radar-carousel .radar-carousel-controls{bottom:.35rem}
+}
