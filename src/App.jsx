@@ -120,6 +120,23 @@ function LuxuryVideoPlayer({video,poster,label,field,session,duration}){
   </div></Reveal>
 }
 
+function AnimatedFalconProfiles({profiles,classes}){
+  const container={hidden:{},show:{transition:{staggerChildren:.16,delayChildren:.08}}}
+  const card={hidden:{opacity:0,y:72,rotateX:7},show:{opacity:1,y:0,rotateX:0,transition:{duration:.9,ease:[.16,1,.3,1]}}}
+  const image={hidden:{clipPath:'inset(100% 0 0 0)',scale:1.12},show:{clipPath:'inset(0% 0 0 0)',scale:1,transition:{duration:1.15,ease:[.16,1,.3,1]}}}
+  return <motion.div className="falcon-profiles falcon-profiles-animated" variants={container} initial="hidden" whileInView="show" viewport={{once:true,amount:.18}}>
+    {profiles.map((profile,index)=><motion.article className="profile-card" key={profile[0]} variants={card} whileHover="hover">
+      <motion.div className="profile-photo-mask" variants={image}>
+        <motion.div className={`profile-photo profile-photo-${classes[index]}`} variants={{hover:{scale:1.065,transition:{duration:.75,ease:[.16,1,.3,1]}}}}>
+          <span>{profile[0]}</span><i className="profile-scan" aria-hidden="true"/>
+        </motion.div>
+      </motion.div>
+      <motion.p variants={{hidden:{opacity:0,x:-16},show:{opacity:1,x:0,transition:{delay:.35,duration:.6}}}}>0{index+1} / PRIVATE PROFILE</motion.p>
+      <h3>{profile[1]}</h3><p>{profile[2]}</p><span className="profile-motion-mark" aria-hidden="true">↗</span>
+    </motion.article>)}
+  </motion.div>
+}
+
 const radarFalcons=[
   {name:'Layth',breed:'White falcon',image:falconHeadImage},
   {name:'Shaheen',breed:'Peregrine falcon',image:asset('falcon-head-peregrine.png')}
@@ -159,7 +176,7 @@ function App(){
     <div className="motion-rail"><motion.div className="rail-track" animate={{x:[0,-650]}} transition={{duration:18,repeat:Infinity,ease:'linear'}}><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i><span>HERITAGE IN MOTION</span></motion.div></div>
     <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><LuxuryVideoPlayer video="falaq-training-1.mp4" poster="falaq-training-poster.jpg" label="FALAQ / TRAINING" field="FIELD 01" session="DESERT CONDITIONING" duration="00:12"/><Reveal className="manifesto-copy"><p className="eyebrow dark">{t.conceptK}</p><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><motion.article className="principle-card" whileHover={{y:-10}} transition={{duration:.35,ease:[.16,1,.3,1]}}><div className="principle-top"><span>0{i+1}</span><i>↗</i></div><div className="principle-body"><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="principle-track"><span/></div></motion.article></Reveal>)}</div></section>
     <section className="portrait-story"><div className="portrait-sticky"><div className="portrait-image-wrap"><img src={asset('hero-falcon.webp')} alt="Falcon overlooking the Arabian desert"/></div><div className="portrait-shade"/><div className="portrait-copy"><SectionTitle kicker={t.connectionK} title={t.connectionT} light/><p>{t.connectionP}</p><div className="connection-moments">{t.connectionMoments.map((m,i)=><div key={m[0]}><span>0{i+1}</span><strong>{m[0]}</strong><p>{m[1]}</p></div>)}</div></div></div></section>
-    <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><SectionTitle kicker={t.falconsK} title={t.falconsT}/><p>{t.falconsP}</p></div><div className="falcons-film"><LuxuryVideoPlayer video="falaq-meet-falcons.mp4" poster="falaq-meet-falcons-poster.jpg" label="FALAQ / PRIVATE SELECTION" field="VIEWING 01" session="MEET THE FALCONS" duration="00:20"/></div><div className="falcon-profiles">{t.profiles.map((p,i)=><motion.article className="profile-card" key={p[0]} initial={{opacity:0,y:50}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.1}} whileHover={{y:-12}}><div className={`profile-photo profile-photo-${profileClasses[i]}`}><span>{p[0]}</span></div><p>0{i+1} / PRIVATE PROFILE</p><h3>{p[1]}</h3><p>{p[2]}</p></motion.article>)}</div><a className="button button-ink" href="#enquire">{t.consult}</a></section>
+    <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><SectionTitle kicker={t.falconsK} title={t.falconsT}/><p>{t.falconsP}</p></div><div className="falcons-film"><LuxuryVideoPlayer video="falaq-meet-falcons.mp4" poster="falaq-meet-falcons-poster.jpg" label="FALAQ / PRIVATE SELECTION" field="VIEWING 01" session="MEET THE FALCONS" duration="00:20"/></div><AnimatedFalconProfiles profiles={t.profiles} classes={profileClasses}/><a className="button button-ink" href="#enquire">{t.consult}</a></section>
     <section className="ownership section" id="ownership"><div className="section-index light">03 / 07</div><div className="ownership-heading"><p className="eyebrow">{t.journeyK}</p><h2>{t.journeyT}</h2><p>{t.clarityP}</p></div><div className="journey-timeline"><div className="journey-line" aria-hidden="true"><span/><img className="journey-falcon" src={asset('falaq-icon-cursor.png')} alt=""/></div><div className="journey">{t.journey.map((s,i)=><motion.article className="journey-card" key={s[0]} whileHover={{y:-8}}><div className="journey-node" style={{'--pulse-delay':`${i*.45}s`}} aria-hidden="true"/><div className="journey-top"><span>0{i+1}</span><i>↗</i></div><h3>{s[0]}</h3><p>{s[1]}</p></motion.article>)}</div></div></section>
     <section className="performance-story" id="care"><div className="performance-sticky"><PerformanceRadar/><Reveal className="performance-copy"><SectionTitle kicker={t.careK} title={t.careT} light/><p>{t.careP}</p><div className="performance-steps">{t.careProofs.map((x,i)=><div key={x}><span>0{i+1}</span><p>{x}</p></div>)}</div></Reveal></div></section>
     <section className="digital section" id="digital"><div className="section-index">04 / 07</div><Reveal className="digital-copy"><SectionTitle kicker={t.portalK} title={t.portalT}/><p>{t.portalP}</p><ul><li>Training updates, photos & videos</li><li>Care reports & documentation</li><li>Competition calendar</li><li>Expense summaries & team contact</li></ul></Reveal><FalconCards/></section>

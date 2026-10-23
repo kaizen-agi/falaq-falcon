@@ -204,3 +204,20 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 
 .falcons-film{width:min(640px,72vw);margin:5.5rem auto 0}.falcons-film .luxury-training-player{box-shadow:0 38px 90px rgba(23,20,15,.3)}.falcons-film+.falcon-profiles{margin-top:6.5rem}
 @media(max-width:740px){.falcons-film{width:100%;margin-top:3.5rem}.falcons-film+.falcon-profiles{margin-top:4.5rem}}
+
+/* 21st-inspired editorial reveal for the Meet the Falcons profiles. */
+.falcon-profiles-animated{perspective:1200px}
+.falcon-profiles-animated .profile-card{position:relative;transform-origin:center bottom;will-change:transform}
+.profile-photo-mask{height:420px;overflow:hidden;background:#bbb2a1}
+.profile-photo-mask .profile-photo{height:100%;transform-origin:center center;will-change:transform}
+.profile-scan{position:absolute;z-index:2;left:-15%;right:-15%;bottom:-22%;height:1px;background:linear-gradient(90deg,transparent,#f0cc7c 22%,#fff2bd 50%,#f0cc7c 78%,transparent);opacity:0;box-shadow:0 0 18px rgba(240,204,124,.9);transform:rotate(-4deg)}
+.profile-card:hover .profile-scan{animation:profileScan 1.25s cubic-bezier(.16,1,.3,1) forwards}
+.profile-motion-mark{position:absolute;right:.15rem;top:calc(420px + 1.05rem);display:grid;place-items:center;width:28px;height:28px;border:1px solid rgba(112,90,53,.32);color:#806b47;font-size:13px;transition:background .35s ease,color .35s ease,transform .35s ease}
+.profile-card:hover .profile-motion-mark{background:#151612;color:#d5b778;transform:rotate(45deg)}
+.profile-card h3,.profile-card>p{transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.profile-card>p:last-of-type{color:#656158;font-size:12px}
+.profile-card:hover h3,.profile-card:hover>p:last-of-type{transform:translateX(7px)}
+@keyframes profileScan{0%{bottom:-22%;opacity:0}18%{opacity:1}78%{opacity:.82}100%{bottom:118%;opacity:0}}
+@media(max-width:980px){.profile-photo-mask{height:360px}.profile-motion-mark{top:calc(360px + 1.05rem)}}
+@media(max-width:640px){.profile-photo-mask{height:390px}.profile-motion-mark{top:calc(390px + 1.05rem)}}
+@media(prefers-reduced-motion:reduce){.falcon-profiles-animated .profile-card,.profile-photo-mask,.profile-photo-mask .profile-photo{transform:none!important;clip-path:none!important;opacity:1!important}.profile-card:hover .profile-scan{animation:none}.profile-card h3,.profile-card>p,.profile-motion-mark{transition:none}}
