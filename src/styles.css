@@ -202,6 +202,21 @@ html{forced-color-adjust:none;-webkit-text-size-adjust:100%;text-size-adjust:100
 @media(max-width:980px){.journey-timeline{margin-top:4.5rem;padding:0 0 0 2.7rem}.journey-line{top:1rem;bottom:1rem;left:1rem;right:auto;width:1px;height:auto}.journey-line>span{background:linear-gradient(180deg,transparent,#d5b778 12%,#f4dfa7 50%,#d5b778 88%,transparent)}.journey-falcon{top:0;left:50%;animation:falconTimelineMobile 16s cubic-bezier(.45,0,.55,1) infinite}.journey-timeline .journey{grid-template-columns:1fr}.journey-timeline .journey-card,.journey-timeline .journey-card:last-child{min-height:0;padding:1.7rem 1.5rem 2.2rem;border:0;border-bottom:1px solid rgba(255,255,255,.12)}.journey-node{top:2.1rem;left:-1.7rem}.journey-timeline .journey-card h3{font-size:34px;margin:2.4rem 0 .8rem;max-width:520px}.journey-timeline .journey-card p{max-width:560px}@keyframes falconTimelineMobile{0%{top:0}18%{top:25%}38%{top:25%}48%{top:50%}62%{top:50%}72%{top:75%}84%{top:75%}100%{top:100%}}}
 @media(prefers-reduced-motion:reduce){.journey-line>span,.journey-node,.journey-falcon{animation:none}.journey-falcon{left:50%}}
 
+/* 21st-style synchronized journey timeline. */
+.journey-timeline-21st .journey-progress{animation:none;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,#b9914f,#f4dfa7 72%,#fff3c2);box-shadow:0 0 10px #d5b778,0 0 30px rgba(213,183,120,.72)}
+.journey-timeline-21st .journey-falcon{animation:none;left:var(--journey-progress);transition:left .9s cubic-bezier(.16,1,.3,1);filter:drop-shadow(0 0 7px rgba(225,193,123,1)) drop-shadow(0 0 18px rgba(225,193,123,.58))}
+.journey-timeline-21st .journey-card{opacity:.68}
+.journey-timeline-21st .journey-card.is-active{background:linear-gradient(180deg,rgba(213,183,120,.075),rgba(213,183,120,.018));color:#fff;box-shadow:inset 0 2px 0 #d5b778}
+.journey-timeline-21st .journey-card.is-active p{color:#c7c7bd}
+.journey-timeline-21st .journey-card.is-active .journey-top i{color:#f4dfa7;transform:translate(4px,-4px)}
+.journey-timeline-21st .journey-node{appearance:none;padding:0;border:0;cursor:pointer;animation:none;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s ease,background .45s ease}
+.journey-timeline-21st .journey-node:before{content:"";position:absolute;inset:-8px;border:1px solid rgba(224,193,124,.28);border-radius:50%;transform:scale(.55);opacity:0;transition:transform .45s ease,opacity .45s ease}
+.journey-timeline-21st .journey-node.is-active{background:#fff0b8;transform:translateX(-50%) scale(1.34);box-shadow:0 0 0 7px rgba(224,193,124,.13),0 0 26px rgba(224,193,124,1)}
+.journey-timeline-21st .journey-node.is-active:before{transform:scale(1);opacity:1}
+.journey-timeline-21st .journey-node:focus-visible{outline:2px solid #fff;outline-offset:9px}
+@media(max-width:980px){.journey-timeline-21st .journey-falcon{left:50%;top:var(--journey-progress);transition:top .9s cubic-bezier(.16,1,.3,1)}.journey-timeline-21st .journey-progress{transform-origin:center top}}
+@media(prefers-reduced-motion:reduce){.journey-timeline-21st .journey-falcon{left:50%;top:50%;transition:none}.journey-timeline-21st .journey-progress{transform:scale(1)!important}.journey-timeline-21st .journey-card{opacity:1!important;transform:none!important}.journey-timeline-21st .journey-node{transition:none}}
+
 .falcons.section{padding-top:8rem;padding-bottom:8rem}
 .falcons-head{grid-template-columns:minmax(0,1.15fr) minmax(300px,.65fr);gap:6vw;align-items:end}
 .falcons-title .eyebrow{margin-bottom:1.4rem}.falcons-title h2{max-width:850px}

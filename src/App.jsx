@@ -137,6 +137,34 @@ function AnimatedFalconProfiles({profiles,classes}){
   </motion.div>
 }
 
+function AnimatedJourneyTimeline({steps}){
+  const timelineRef=useRef(null)
+  const [activeStep,setActiveStep]=useState(0),[isVisible,setIsVisible]=useState(false)
+  useEffect(()=>{
+    const node=timelineRef.current
+    if(!node)return
+    const observer=new IntersectionObserver(([entry])=>setIsVisible(entry.isIntersecting),{threshold:.24})
+    observer.observe(node)
+    return()=>observer.disconnect()
+  },[])
+  useEffect(()=>{
+    if(!isVisible)return
+    const timer=setInterval(()=>setActiveStep(step=>(step+1)%steps.length),2400)
+    return()=>clearInterval(timer)
+  },[isVisible,steps.length])
+  const progress=steps.length>1?activeStep/(steps.length-1):0
+  return <div className="journey-timeline journey-timeline-21st" ref={timelineRef} style={{'--journey-progress':`${progress*100}%`}}>
+    <div className="journey-line" aria-hidden="true"><motion.span className="journey-progress" animate={{scaleX:progress}} transition={{duration:.9,ease:[.16,1,.3,1]}}/><img className="journey-falcon" src={asset('falaq-icon-cursor.png')} alt=""/></div>
+    <div className="journey">{steps.map((step,index)=>{
+      const isActive=index===activeStep
+      return <motion.article className={`journey-card ${isActive?'is-active':''}`} key={step[0]} animate={{opacity:isActive?1:.68,y:isActive?-9:0}} transition={{duration:.65,ease:[.16,1,.3,1]}} whileHover={{opacity:1,y:-9}}>
+        <button type="button" className={`journey-node ${isActive?'is-active':''}`} onClick={()=>setActiveStep(index)} aria-label={`Show step ${index+1}: ${step[0]}`} aria-current={isActive?'step':undefined}/>
+        <div className="journey-top"><span>0{index+1}</span><i>↗</i></div><h3>{step[0]}</h3><p>{step[1]}</p>
+      </motion.article>
+    })}</div>
+  </div>
+}
+
 const radarFalcons=[
   {name:'Layth',breed:'White falcon',image:falconHeadImage},
   {name:'Shaheen',breed:'Peregrine falcon',image:asset('falcon-head-peregrine.png')}
@@ -177,7 +205,7 @@ function App(){
     <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><LuxuryVideoPlayer video="falaq-training-1.mp4" poster="falaq-training-poster.jpg" label="FALAQ / TRAINING" field="FIELD 01" session="DESERT CONDITIONING" duration="00:12"/><Reveal className="manifesto-copy"><p className="eyebrow dark">{t.conceptK}</p><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><motion.article className="principle-card" whileHover={{y:-10}} transition={{duration:.35,ease:[.16,1,.3,1]}}><div className="principle-top"><span>0{i+1}</span><i>↗</i></div><div className="principle-body"><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="principle-track"><span/></div></motion.article></Reveal>)}</div></section>
     <section className="portrait-story"><div className="portrait-sticky"><div className="portrait-image-wrap"><img src={asset('hero-falcon.webp')} alt="Falcon overlooking the Arabian desert"/></div><div className="portrait-shade"/><div className="portrait-copy"><SectionTitle kicker={t.connectionK} title={t.connectionT} light/><p>{t.connectionP}</p><div className="connection-moments">{t.connectionMoments.map((m,i)=><div key={m[0]}><span>0{i+1}</span><strong>{m[0]}</strong><p>{m[1]}</p></div>)}</div></div></div></section>
     <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><div className="falcons-title"><SectionTitle kicker={t.falconsK} title={t.falconsT}/></div><p className="falcons-intro">{t.falconsP}</p></div><div className="falcons-film"><LuxuryVideoPlayer video="falaq-meet-falcons.mp4" poster="falaq-meet-falcons-poster.jpg" label="FALAQ / PRIVATE SELECTION" field="VIEWING 01" session="MEET THE FALCONS" duration="00:20"/></div><AnimatedFalconProfiles profiles={t.profiles} classes={profileClasses}/><a className="button button-ink" href="#enquire">{t.consult}</a></section>
-    <section className="ownership section" id="ownership"><div className="section-index light">03 / 07</div><div className="ownership-heading"><p className="eyebrow">{t.journeyK}</p><h2>{t.journeyT}</h2><p>{t.clarityP}</p></div><div className="journey-timeline"><div className="journey-line" aria-hidden="true"><span/><img className="journey-falcon" src={asset('falaq-icon-cursor.png')} alt=""/></div><div className="journey">{t.journey.map((s,i)=><motion.article className="journey-card" key={s[0]} whileHover={{y:-8}}><div className="journey-node" style={{'--pulse-delay':`${i*.45}s`}} aria-hidden="true"/><div className="journey-top"><span>0{i+1}</span><i>↗</i></div><h3>{s[0]}</h3><p>{s[1]}</p></motion.article>)}</div></div></section>
+    <section className="ownership section" id="ownership"><div className="section-index light">03 / 07</div><div className="ownership-heading"><p className="eyebrow">{t.journeyK}</p><h2>{t.journeyT}</h2><p>{t.clarityP}</p></div><AnimatedJourneyTimeline steps={t.journey}/></section>
     <section className="performance-story" id="care"><div className="performance-sticky"><PerformanceRadar/><Reveal className="performance-copy"><SectionTitle kicker={t.careK} title={t.careT} light/><p>{t.careP}</p><div className="performance-steps">{t.careProofs.map((x,i)=><div key={x}><span>0{i+1}</span><p>{x}</p></div>)}</div></Reveal></div></section>
     <section className="digital section" id="digital"><div className="section-index">04 / 07</div><Reveal className="digital-copy"><SectionTitle kicker={t.portalK} title={t.portalT}/><p>{t.portalP}</p><ul><li>Training updates, photos & videos</li><li>Care reports & documentation</li><li>Competition calendar</li><li>Expense summaries & team contact</li></ul></Reveal><FalconCards/></section>
     <div className="statement"><motion.p className="statement-line" animate={{x:[0,-240]}} transition={{duration:12,repeat:Infinity,repeatType:'mirror',ease:'easeInOut'}}><span>ONE FALCON.</span><span>ONE BLOODLINE.</span><span>ONE LEGACY.</span></motion.p></div>
