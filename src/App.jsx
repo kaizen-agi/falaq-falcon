@@ -167,23 +167,22 @@ function AnimatedJourneyTimeline({steps}){
 }
 
 const radarFalcons=[
-  {name:'Layth',breed:'White falcon',image:falconHeadImage},
-  {name:'Shaheen',breed:'Peregrine falcon',image:asset('falcon-head-peregrine.png')}
+  {name:'Layth',breed:'White falcon',image:falconHeadImage,values:[90,84,78,88,94]},
+  {name:'Shaheen',breed:'Peregrine falcon',image:asset('falcon-head-peregrine.png'),values:[86,96,82,91,89]}
 ]
-const radarValues=[90,84,78,88,94]
 const radarPointList=(values)=>values.map((value,index)=>{const angle=(-90+index*72)*Math.PI/180;const radius=205*value/100;return [260+Math.cos(angle)*radius,260+Math.sin(angle)*radius]})
 
 function PerformanceRadar(){
   const [active,setActive]=useState(0)
   useEffect(()=>{const timer=setInterval(()=>setActive(index=>(index+1)%radarFalcons.length),4800);return()=>clearInterval(timer)},[])
-  const falcon=radarFalcons[active],points=radarPointList(radarValues),pointString=points.map(point=>point.join(',')).join(' ')
+  const falcon=radarFalcons[active],points=radarPointList(falcon.values),pointString=points.map(point=>point.join(',')).join(' ')
   const change=(direction)=>setActive(index=>(index+direction+radarFalcons.length)%radarFalcons.length)
   return <div className="performance-visual performance-radar-simple radar-carousel">
     <svg viewBox="0 0 520 520" role="img" aria-label="Falcon performance spider graph">
       <g className="performance-web"><polygon points="260,55 455,197 381,425 139,425 65,197"/><polygon points="260,105 408,212 351,385 169,385 112,212"/><polygon points="260,155 360,227 321,345 199,345 160,227"/><line x1="260" y1="260" x2="260" y2="55"/><line x1="260" y1="260" x2="455" y2="197"/><line x1="260" y1="260" x2="381" y2="425"/><line x1="260" y1="260" x2="139" y2="425"/><line x1="260" y1="260" x2="65" y2="197"/></g>
-      <polygon className="performance-score" points={pointString}/>
-      <g className="performance-score-dots">{points.map((point,index)=><circle key={index} r="5" cx={point[0]} cy={point[1]}/>)}</g>
-      <g className="performance-axis-labels"><text x="260" y="30" textAnchor="middle">TRAINING</text><text x="480" y="194" textAnchor="end">SPEED</text><text x="397" y="461" textAnchor="middle">ENDURANCE</text><text x="123" y="461" textAnchor="middle">FOCUS</text><text x="40" y="194">HEALTH</text></g>
+      <motion.polygon className="performance-score" animate={{points:pointString}} transition={{duration:.75,ease:[.16,1,.3,1]}}/>
+      <g className="performance-score-dots">{points.map((point,index)=><motion.circle key={index} r="5" animate={{cx:point[0],cy:point[1]}} transition={{duration:.75,ease:[.16,1,.3,1]}}/>)}</g>
+      <g className="performance-axis-labels"><text x="260" y="30" textAnchor="middle">TRAINING {falcon.values[0]}</text><text x="480" y="194" textAnchor="end">SPEED {falcon.values[1]}</text><text x="397" y="461" textAnchor="middle">ENDURANCE {falcon.values[2]}</text><text x="123" y="461" textAnchor="middle">FOCUS {falcon.values[3]}</text><text x="40" y="194">HEALTH {falcon.values[4]}</text></g>
     </svg>
     <div className="radar-portrait" aria-live="polite"><AnimatePresence mode="wait"><motion.img key={falcon.image} src={falcon.image} alt={`${falcon.name}, ${falcon.breed}`} initial={{opacity:0,scale:.82,rotate:-3}} animate={{opacity:1,scale:1,rotate:0}} exit={{opacity:0,scale:1.08,rotate:3}} transition={{duration:.55,ease:[.16,1,.3,1]}}/></AnimatePresence></div>
     <div className="radar-carousel-controls">
