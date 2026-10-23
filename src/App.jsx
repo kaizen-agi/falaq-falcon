@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 
 const asset = (name) => `${import.meta.env.BASE_URL}assets/${name}`
 const falconHeadImage = asset('40d9778de2f663ba.png')
@@ -48,7 +48,8 @@ const content = {
 }
 
 function Reveal({ children, className = '', delay = 0 }) {
-  return <motion.div className={className} initial={{opacity:0,y:46}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.16}} transition={{duration:.85,delay,ease:[.16,1,.3,1]}}>{children}</motion.div>
+  const reduceMotion=useReducedMotion()
+  return <motion.div className={className} initial={{opacity:0,transform:reduceMotion?'none':'translateY(46px)'}} whileInView={{opacity:1,transform:'none'}} viewport={{once:true,amount:.16}} transition={{duration:reduceMotion?.2:.85,delay:reduceMotion?0:delay,ease:[.23,1,.32,1]}}>{children}</motion.div>
 }
 
 function Header({lang,setLang,menu,setMenu,t}) {
@@ -64,25 +65,27 @@ function Header({lang,setLang,menu,setMenu,t}) {
 
 function Hero({t}) {
   const [show,setShow]=useState(false),[showCards,setShowCards]=useState(false)
+  const reduceMotion=useReducedMotion()
   const {scrollY}=useScroll(); const y=useTransform(scrollY,[0,900],[0,150])
   useEffect(()=>{const cardTimer=setTimeout(()=>setShowCards(true),6000);const copyTimer=setTimeout(()=>setShow(true),7000);return()=>{clearTimeout(cardTimer);clearTimeout(copyTimer)}},[])
   return <section className="hero" id="top">
-    <motion.div className="hero-media" style={{y}}><video className="hero-video" autoPlay muted loop playsInline preload="metadata" poster={asset('falaq-hero-poster.jpg')}><source src={asset('falaq-hero.mp4')} type="video/mp4" /></video></motion.div><div className="hero-grain"/>
+    <motion.div className="hero-media" style={reduceMotion?undefined:{y}}><video className="hero-video" autoPlay muted loop playsInline preload="metadata" poster={asset('falaq-hero-poster.jpg')}><source src={asset('falaq-hero.mp4')} type="video/mp4" /></video></motion.div><div className="hero-grain"/>
     <AnimatePresence>{show&&<motion.div className="hero-copy" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.13}}}}>
       <motion.p className="eyebrow" variants={{hidden:{opacity:0},show:{opacity:1}}}>{t.eyebrow}</motion.p>
-      <h1 className="split-hero"><motion.span variants={{hidden:{opacity:0,y:120},show:{opacity:1,y:0,transition:{duration:1.15,ease:[.16,1,.3,1]}}}}>{t.hero1}</motion.span><motion.em variants={{hidden:{opacity:0,y:120},show:{opacity:1,y:0,transition:{duration:1.2,ease:[.16,1,.3,1]}}}}>{t.hero2}</motion.em></h1>
+      <h1 className="split-hero"><motion.span variants={{hidden:{opacity:0,transform:reduceMotion?'none':'translateY(120px)'},show:{opacity:1,transform:'none',transition:{duration:reduceMotion?.2:1.15,ease:[.23,1,.32,1]}}}}>{t.hero1}</motion.span><motion.em variants={{hidden:{opacity:0,transform:reduceMotion?'none':'translateY(120px)'},show:{opacity:1,transform:'none',transition:{duration:reduceMotion?.2:1.2,ease:[.23,1,.32,1]}}}}>{t.hero2}</motion.em></h1>
       <motion.p className="hero-intro" variants={{hidden:{opacity:0},show:{opacity:1,transition:{duration:1}}}}>{t.intro}</motion.p>
-      <motion.div className="hero-actions" variants={{hidden:{opacity:0},show:{opacity:1}}}><motion.a whileHover={{y:-4}} className="button button-gold hero-cta-glow" href="#enquire">{t.consult}</motion.a><a className="text-link" href="#concept">{t.explore}<b>↓</b></a></motion.div>
+      <motion.div className="hero-actions" variants={{hidden:{opacity:0},show:{opacity:1}}}><a className="button button-gold hero-cta-glow" href="#enquire">{t.consult}</a><a className="text-link" href="#concept">{t.explore}<b>↓</b></a></motion.div>
     </motion.div>}</AnimatePresence>
-    <AnimatePresence>{showCards&&<motion.div className="hero-card-popups" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:.18}}}}>{[['card-falaq-falcon-transparent.png','Shaheen'],['card-falaq-falcon-2-transparent.png','Layth']].map((card,index)=><motion.figure key={card[0]} variants={{hidden:{opacity:0,y:90,scale:.72,rotate:index===0?-6:6},show:{opacity:1,y:0,scale:1,rotate:0,transition:{type:'spring',stiffness:110,damping:14}}}} whileHover={{y:-12,scale:1.04,rotate:0}}><img src={asset(card[0])} alt={`${card[1]} falcon card`}/></motion.figure>)}</motion.div>}</AnimatePresence>
+    <AnimatePresence>{showCards&&<motion.div className="hero-card-popups" initial="hidden" animate="show" variants={{show:{transition:{staggerChildren:reduceMotion?0:.08}}}}>{[['card-falaq-falcon-transparent.png','Shaheen'],['card-falaq-falcon-2-transparent.png','Layth']].map((card,index)=><motion.figure key={card[0]} variants={{hidden:{opacity:0,transform:reduceMotion?'none':`translateY(90px) scale(.94) rotate(${index===0?-3:3}deg)`},show:{opacity:1,transform:'none',transition:reduceMotion?{duration:.2}:{type:'spring',duration:.5,bounce:.2}}}}><img src={asset(card[0])} alt={`${card[1]} falcon card`}/></motion.figure>)}</motion.div>}</AnimatePresence>
   </section>
 }
 
 const SectionTitle=({kicker,title,light=false})=><><p className={`eyebrow ${light?'':'dark'}`}>{kicker}</p><h2>{title}</h2></>
 
 function FalconCards(){
+  const reduceMotion=useReducedMotion()
   const cards=[['card-falaq-falcon-transparent.png','Shaheen falcon performance card'],['card-falaq-falcon-2-transparent.png','Layth falcon performance card']]
-  return <div className="falcon-owner-cards">{cards.map((card,i)=><motion.figure key={card[0]} initial={{opacity:0,y:42}} whileInView={{opacity:1,y:0}} viewport={{once:true,amount:.2}} transition={{duration:.75,delay:i*.12,ease:[.16,1,.3,1]}} whileHover={{y:-10,rotate:i===0?-1:1}}><img src={asset(card[0])} alt={card[1]}/></motion.figure>)}</div>
+  return <div className="falcon-owner-cards">{cards.map((card,i)=><motion.figure key={card[0]} initial={{opacity:0,transform:reduceMotion?'none':'translateY(42px)'}} whileInView={{opacity:1,transform:'none'}} viewport={{once:true,amount:.2}} transition={{duration:reduceMotion?.2:.75,delay:reduceMotion?0:i*.08,ease:[.23,1,.32,1]}}><img src={asset(card[0])} alt={card[1]}/></motion.figure>)}</div>
 }
 
 function LuxuryVideoPlayer({video,poster,label,field,session,duration}){
@@ -121,18 +124,19 @@ function LuxuryVideoPlayer({video,poster,label,field,session,duration}){
 }
 
 function AnimatedFalconProfiles({profiles,classes}){
+  const reduceMotion=useReducedMotion()
   const portraits=[asset('hero-falcon.webp'),asset('falcon-head-peregrine.png'),asset('40d9778de2f663ba.png')]
-  const container={hidden:{},show:{transition:{staggerChildren:.16,delayChildren:.08}}}
-  const card={hidden:{opacity:0,y:72,rotateX:7},show:{opacity:1,y:0,rotateX:0,transition:{duration:.9,ease:[.16,1,.3,1]}}}
-  const image={hidden:{clipPath:'inset(100% 0 0 0)',scale:1.12},show:{clipPath:'inset(0% 0 0 0)',scale:1,transition:{duration:1.15,ease:[.16,1,.3,1]}}}
+  const container={hidden:{},show:{transition:{staggerChildren:reduceMotion?0:.08,delayChildren:reduceMotion?0:.08}}}
+  const card={hidden:{opacity:0,transform:reduceMotion?'none':'translateY(72px) rotateX(7deg)'},show:{opacity:1,transform:'none',transition:{duration:reduceMotion?.2:.9,ease:[.23,1,.32,1]}}}
+  const image={hidden:{clipPath:reduceMotion?'inset(0 0 0 0)':'inset(100% 0 0 0)',transform:reduceMotion?'none':'scale(1.12)'},show:{clipPath:'inset(0% 0 0 0)',transform:'none',transition:{duration:reduceMotion?.2:1.15,ease:[.23,1,.32,1]}}}
   return <motion.div className="falcon-profiles falcon-profiles-animated" variants={container} initial="hidden" whileInView="show" viewport={{once:true,amount:.18}}>
     {profiles.map((profile,index)=><motion.article className="profile-card" key={profile[0]} variants={card} whileHover="hover">
       <motion.div className="profile-photo-mask" variants={image}>
-        <motion.div className={`profile-photo profile-photo-${classes[index]}`} style={{backgroundImage:`url(${portraits[index]})`}} variants={{hover:{scale:1.065,transition:{duration:.75,ease:[.16,1,.3,1]}}}}>
+        <motion.div className={`profile-photo profile-photo-${classes[index]}`} style={{backgroundImage:`url(${portraits[index]})`}} variants={{hover:{transform:reduceMotion?'none':'scale(1.035)',transition:{duration:.24,ease:[.23,1,.32,1]}}}}>
           <span>{profile[0]}</span><i className="profile-scan" aria-hidden="true"/>
         </motion.div>
       </motion.div>
-      <motion.p variants={{hidden:{opacity:0,x:-16},show:{opacity:1,x:0,transition:{delay:.35,duration:.6}}}}>0{index+1} / PRIVATE PROFILE</motion.p>
+      <motion.p variants={{hidden:{opacity:0,transform:reduceMotion?'none':'translateX(-16px)'},show:{opacity:1,transform:'none',transition:{delay:reduceMotion?0:.24,duration:reduceMotion?.2:.6,ease:[.23,1,.32,1]}}}}>0{index+1} / PRIVATE PROFILE</motion.p>
       <h3>{profile[1]}</h3><p>{profile[2]}</p><span className="profile-motion-mark" aria-hidden="true">↗</span>
     </motion.article>)}
   </motion.div>
@@ -140,6 +144,7 @@ function AnimatedFalconProfiles({profiles,classes}){
 
 function AnimatedJourneyTimeline({steps}){
   const timelineRef=useRef(null)
+  const reduceMotion=useReducedMotion()
   const [activeStep,setActiveStep]=useState(0),[isVisible,setIsVisible]=useState(false)
   useEffect(()=>{
     const node=timelineRef.current
@@ -149,17 +154,17 @@ function AnimatedJourneyTimeline({steps}){
     return()=>observer.disconnect()
   },[])
   useEffect(()=>{
-    if(!isVisible)return
+    if(!isVisible||reduceMotion)return
     const timer=setInterval(()=>setActiveStep(step=>(step+1)%steps.length),2400)
     return()=>clearInterval(timer)
-  },[isVisible,steps.length])
+  },[isVisible,steps.length,reduceMotion])
   const progress=steps.length>1?activeStep/(steps.length-1):0
   return <div className="journey-timeline journey-timeline-21st" ref={timelineRef} style={{'--journey-progress':`${progress*100}%`}}>
-    <div className="journey-line" aria-hidden="true"><motion.span className="journey-progress" animate={{scaleX:progress}} transition={{duration:.9,ease:[.16,1,.3,1]}}/><img className="journey-falcon" src={asset('falaq-icon-cursor.png')} alt=""/></div>
+    <div className="journey-line" aria-hidden="true"><motion.span className="journey-progress" animate={{transform:`scaleX(${progress})`}} transition={{duration:reduceMotion?.01:.26,ease:[.77,0,.175,1]}}/></div>
     <div className="journey">{steps.map((step,index)=>{
       const isActive=index===activeStep
-      return <motion.article className={`journey-card ${isActive?'is-active':''}`} key={step[0]} animate={{opacity:isActive?1:.68,y:isActive?-9:0}} transition={{duration:.65,ease:[.16,1,.3,1]}} whileHover={{opacity:1,y:-9}}>
-        <button type="button" className={`journey-node ${isActive?'is-active':''}`} onClick={()=>setActiveStep(index)} aria-label={`Show step ${index+1}: ${step[0]}`} aria-current={isActive?'step':undefined}/>
+      return <motion.article className={`journey-card ${isActive?'is-active':''}`} key={step[0]} animate={{opacity:isActive?1:.68,transform:reduceMotion?'none':`translateY(${isActive?-9:0}px)`}} transition={{duration:reduceMotion?.01:.24,ease:[.23,1,.32,1]}}>
+        <button type="button" className={`journey-node ${isActive?'is-active':''}`} onClick={()=>setActiveStep(index)} aria-label={`Show step ${index+1}: ${step[0]}`} aria-current={isActive?'step':undefined}>{isActive&&<motion.img className="journey-falcon-node" src={asset('falaq-icon-cursor.png')} alt="" initial={{opacity:0,transform:reduceMotion?'translate(-50%,-50%)':'translate(-50%,-60%) scale(.94)'}} animate={{opacity:1,transform:'translate(-50%,-60%) scale(1)'}} transition={{duration:reduceMotion?.01:.24,ease:[.23,1,.32,1]}}/>}</button>
         <div className="journey-top"><span>0{index+1}</span><i>↗</i></div><h3>{step[0]}</h3><p>{step[1]}</p>
       </motion.article>
     })}</div>
@@ -174,17 +179,18 @@ const radarPointList=(values)=>values.map((value,index)=>{const angle=(-90+index
 
 function PerformanceRadar(){
   const [active,setActive]=useState(0)
-  useEffect(()=>{const timer=setInterval(()=>setActive(index=>(index+1)%radarFalcons.length),4800);return()=>clearInterval(timer)},[])
+  const reduceMotion=useReducedMotion()
+  useEffect(()=>{if(reduceMotion)return;const timer=setInterval(()=>setActive(index=>(index+1)%radarFalcons.length),4800);return()=>clearInterval(timer)},[reduceMotion])
   const falcon=radarFalcons[active],points=radarPointList(falcon.values),pointString=points.map(point=>point.join(',')).join(' ')
   const change=(direction)=>setActive(index=>(index+direction+radarFalcons.length)%radarFalcons.length)
   return <div className="performance-visual performance-radar-simple radar-carousel">
     <svg viewBox="0 0 520 520" role="img" aria-label="Falcon performance spider graph">
       <g className="performance-web"><polygon points="260,55 455,197 381,425 139,425 65,197"/><polygon points="260,105 408,212 351,385 169,385 112,212"/><polygon points="260,155 360,227 321,345 199,345 160,227"/><line x1="260" y1="260" x2="260" y2="55"/><line x1="260" y1="260" x2="455" y2="197"/><line x1="260" y1="260" x2="381" y2="425"/><line x1="260" y1="260" x2="139" y2="425"/><line x1="260" y1="260" x2="65" y2="197"/></g>
-      <motion.polygon className="performance-score" animate={{points:pointString}} transition={{duration:.75,ease:[.16,1,.3,1]}}/>
-      <g className="performance-score-dots">{points.map((point,index)=><motion.circle key={index} r="5" animate={{cx:point[0],cy:point[1]}} transition={{duration:.75,ease:[.16,1,.3,1]}}/>)}</g>
+      <motion.polygon className="performance-score" animate={{points:pointString}} transition={{duration:reduceMotion?.01:.26,ease:[.77,0,.175,1]}}/>
+      <g className="performance-score-dots">{points.map((point,index)=><motion.circle key={index} r="5" animate={{cx:point[0],cy:point[1]}} transition={{duration:reduceMotion?.01:.26,ease:[.77,0,.175,1]}}/>)}</g>
       <g className="performance-axis-labels"><text x="260" y="30" textAnchor="middle">TRAINING {falcon.values[0]}</text><text x="480" y="194" textAnchor="end">SPEED {falcon.values[1]}</text><text x="397" y="461" textAnchor="middle">ENDURANCE {falcon.values[2]}</text><text x="123" y="461" textAnchor="middle">FOCUS {falcon.values[3]}</text><text x="40" y="194">HEALTH {falcon.values[4]}</text></g>
     </svg>
-    <div className="radar-portrait" aria-live="polite"><AnimatePresence mode="wait"><motion.img key={falcon.image} src={falcon.image} alt={`${falcon.name}, ${falcon.breed}`} initial={{opacity:0,scale:.82,rotate:-3}} animate={{opacity:1,scale:1,rotate:0}} exit={{opacity:0,scale:1.08,rotate:3}} transition={{duration:.55,ease:[.16,1,.3,1]}}/></AnimatePresence></div>
+    <div className="radar-portrait" aria-live="polite"><AnimatePresence mode="wait"><motion.img key={falcon.image} src={falcon.image} alt={`${falcon.name}, ${falcon.breed}`} initial={{opacity:0,transform:reduceMotion?'none':'scale(.96) rotate(-2deg)'}} animate={{opacity:1,transform:'none'}} exit={{opacity:0,transform:reduceMotion?'none':'scale(1.03) rotate(2deg)'}} transition={{duration:reduceMotion?.01:.24,ease:[.23,1,.32,1]}}/></AnimatePresence></div>
     <div className="radar-carousel-controls">
       <button className="radar-arrow" onClick={()=>change(-1)} aria-label="Previous falcon"><span aria-hidden="true">‹</span></button>
       <nav className="radar-banner-nav" aria-label="Choose a falcon portrait">{radarFalcons.map((item,index)=><button key={item.name} className={index===active?'active':''} onClick={()=>setActive(index)} aria-label={`Show ${item.name}, ${item.breed}`} aria-current={index===active?'true':undefined}><span>0{index+1}</span><strong>{item.name}</strong><small>{item.breed}</small></button>)}</nav>
@@ -194,9 +200,10 @@ function PerformanceRadar(){
 }
 
 function ClarityFacts({facts,lang}){
+  const reduceMotion=useReducedMotion()
   const labels=lang==='fr'?['Dossier propriétaire','06 points essentiels']:['Ownership dossier','06 essential points']
-  const container={hidden:{},visible:{transition:{staggerChildren:.065}}}
-  const row={hidden:{opacity:0,y:18},visible:{opacity:1,y:0,transition:{duration:.48,ease:[.22,1,.36,1]}}}
+  const container={hidden:{},visible:{transition:{staggerChildren:reduceMotion?0:.065}}}
+  const row={hidden:{opacity:0,transform:reduceMotion?'none':'translateY(18px)'},visible:{opacity:1,transform:'none',transition:{duration:reduceMotion?.2:.48,ease:[.23,1,.32,1]}}}
   return <motion.div className="clarity-facts clarity-facts-21st" initial="hidden" whileInView="visible" viewport={{once:true,amount:.2}} variants={container}>
     <div className="clarity-facts-head"><span>{labels[0]}</span><small>{labels[1]}</small><i aria-hidden="true"/></div>
     {facts.map((fact,index)=><motion.div className="clarity-fact" key={fact[0]} tabIndex="0" variants={row}>
@@ -213,18 +220,18 @@ function App(){
   return <><motion.div className="react-progress" style={{scaleX:progress}}/><Header {...{lang,setLang,menu,setMenu,t}}/><main>
     <Hero t={t}/>
     <section className="credibility-strip">{t.pillars.map((x,i)=><span key={x}>{x}{i<t.pillars.length-1&&<i>✦</i>}</span>)}</section>
-    <div className="motion-rail"><motion.div className="rail-track" animate={{x:[0,-650]}} transition={{duration:18,repeat:Infinity,ease:'linear'}}><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i><span>HERITAGE IN MOTION</span></motion.div></div>
-    <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><LuxuryVideoPlayer video="falaq-training-1.mp4" poster="falaq-training-poster.jpg" label="FALAQ / TRAINING" field="FIELD 01" session="DESERT CONDITIONING" duration="00:12"/><Reveal className="manifesto-copy"><p className="eyebrow dark">{t.conceptK}</p><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><motion.article className="principle-card" whileHover={{y:-10}} transition={{duration:.35,ease:[.16,1,.3,1]}}><div className="principle-top"><span>0{i+1}</span><i>↗</i></div><div className="principle-body"><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="principle-track"><span/></div></motion.article></Reveal>)}</div></section>
+    <div className="motion-rail"><div className="rail-track rail-track-css"><span>HERITAGE IN MOTION</span><i>✦</i><span>OWN A CHAMPION</span><i>✦</i><span>BUILT FOR PERFORMANCE</span><i>✦</i><span>HERITAGE IN MOTION</span></div></div>
+    <section className="manifesto section" id="concept"><div className="section-index">01 / 07</div><div className="manifesto-grid"><LuxuryVideoPlayer video="falaq-training-1.mp4" poster="falaq-training-poster.jpg" label="FALAQ / TRAINING" field="FIELD 01" session="DESERT CONDITIONING" duration="00:12"/><Reveal className="manifesto-copy"><p className="eyebrow dark">{t.conceptK}</p><h2>{t.conceptT}</h2><p className="lead">{t.conceptP}</p></Reveal></div><div className="principles">{t.steps.map((s,i)=><Reveal key={s[0]} delay={i*.08}><article className="principle-card"><div className="principle-top"><span>0{i+1}</span><i>↗</i></div><div className="principle-body"><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="principle-track"><span/></div></article></Reveal>)}</div></section>
     <section className="portrait-story"><div className="portrait-sticky"><div className="portrait-image-wrap"><img src={asset('hero-falcon.webp')} alt="Falcon overlooking the Arabian desert"/></div><div className="portrait-shade"/><div className="portrait-copy"><SectionTitle kicker={t.connectionK} title={t.connectionT} light/><p>{t.connectionP}</p><div className="connection-moments">{t.connectionMoments.map((m,i)=><div key={m[0]}><span>0{i+1}</span><strong>{m[0]}</strong><p>{m[1]}</p></div>)}</div></div></div></section>
-    <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><div className="falcons-title"><SectionTitle kicker={t.falconsK} title={t.falconsT}/></div><p className="falcons-intro">{t.falconsP}</p></div><div className="falcons-showcase"><div className="falcons-film"><LuxuryVideoPlayer video="falaq-meet-falcons.mp4" poster="falaq-meet-falcons-poster.jpg" label="FALAQ / PRIVATE SELECTION" field="VIEWING 01" session="MEET THE FALCONS" duration="00:20"/></div><Reveal className="falcons-dossier"><div className="dossier-top"><span>FALAQ / STANDARD</span><i/></div><h3>{t.falconsBrief}</h3><div className="dossier-facts">{t.falconsFacts.map(f=><motion.div key={f[1]} whileHover={{x:7}}><span>{f[0]}</span><strong>{f[1]}</strong><small>{f[2]}</small></motion.div>)}</div><a href="#enquire">{t.consult}<b>↗</b></a></Reveal></div><AnimatedFalconProfiles profiles={t.profiles} classes={profileClasses}/><a className="button button-ink" href="#enquire">{t.consult}</a></section>
+    <section className="falcons section" id="falcons"><div className="section-index">02 / 07</div><div className="falcons-head"><div className="falcons-title"><SectionTitle kicker={t.falconsK} title={t.falconsT}/></div><p className="falcons-intro">{t.falconsP}</p></div><div className="falcons-showcase"><div className="falcons-film"><LuxuryVideoPlayer video="falaq-meet-falcons.mp4" poster="falaq-meet-falcons-poster.jpg" label="FALAQ / PRIVATE SELECTION" field="VIEWING 01" session="MEET THE FALCONS" duration="00:20"/></div><Reveal className="falcons-dossier"><div className="dossier-top"><span>FALAQ / STANDARD</span><i/></div><h3>{t.falconsBrief}</h3><div className="dossier-facts">{t.falconsFacts.map(f=><div key={f[1]}><span>{f[0]}</span><strong>{f[1]}</strong><small>{f[2]}</small></div>)}</div><a href="#enquire">{t.consult}<b>↗</b></a></Reveal></div><AnimatedFalconProfiles profiles={t.profiles} classes={profileClasses}/><a className="button button-ink" href="#enquire">{t.consult}</a></section>
     <section className="ownership section" id="ownership"><div className="section-index light">03 / 07</div><div className="ownership-heading"><p className="eyebrow">{t.journeyK}</p><h2>{t.journeyT}</h2><p>{t.clarityP}</p></div><AnimatedJourneyTimeline steps={t.journey}/></section>
     <section className="performance-story" id="care"><div className="performance-sticky"><PerformanceRadar/><Reveal className="performance-copy"><SectionTitle kicker={t.careK} title={t.careT} light/><p>{t.careP}</p><div className="performance-steps">{t.careProofs.map((x,i)=><div key={x}><span>0{i+1}</span><p>{x}</p></div>)}</div></Reveal></div></section>
     <section className="digital section" id="digital"><div className="section-index">04 / 07</div><Reveal className="digital-copy"><SectionTitle kicker={t.portalK} title={t.portalT}/><p>{t.portalP}</p><ul><li>Training updates, photos & videos</li><li>Care reports & documentation</li><li>Competition calendar</li><li>Expense summaries & team contact</li></ul></Reveal><FalconCards/></section>
-    <div className="statement"><motion.p className="statement-line" animate={{x:[0,-240]}} transition={{duration:12,repeat:Infinity,repeatType:'mirror',ease:'easeInOut'}}><span>ONE FALCON.</span><span>ONE BLOODLINE.</span><span>ONE LEGACY.</span></motion.p></div>
-    <section className="circle section" id="circle"><div className="section-index light">05 / 07</div><div className="circle-head"><SectionTitle kicker={t.pathsK} title={t.pathsT} light/><p>{t.clarityP}</p></div><div className="tiers">{t.paths.map((p,i)=><motion.article key={p[0]} className={i===1?'featured':''} whileHover={{x:10}}><span className="tier-no">0{i+1}</span><div><p className="tier-label">{p[0]}</p><h3>{p[1]}</h3></div><p>{t.steps[i]?.[1]}</p><a href="#enquire">↗</a></motion.article>)}</div></section>
+    <div className="statement"><p className="statement-line statement-line-css"><span>ONE FALCON.</span><span>ONE BLOODLINE.</span><span>ONE LEGACY.</span></p></div>
+    <section className="circle section" id="circle"><div className="section-index light">05 / 07</div><div className="circle-head"><SectionTitle kicker={t.pathsK} title={t.pathsT} light/><p>{t.clarityP}</p></div><div className="tiers">{t.paths.map((p,i)=><article key={p[0]} className={i===1?'featured':''}><span className="tier-no">0{i+1}</span><div><p className="tier-label">{p[0]}</p><h3>{p[1]}</h3></div><p>{t.steps[i]?.[1]}</p><a href="#enquire">↗</a></article>)}</div></section>
     <section className="heritage section" id="clarity"><div className="heritage-quote"><blockquote>“{t.risk}”</blockquote></div><Reveal className="heritage-copy"><SectionTitle kicker={t.clarityK} title={t.clarityT}/><p>{t.clarityP}</p><ClarityFacts facts={t.clarityFacts} lang={lang}/><p className="risk-note"><span aria-hidden="true">◆</span>{t.risk}</p><a className="button button-ink" href="#enquire">{t.dossier}</a></Reveal></section>
     <section className="faq section"><div className="section-index">06 / 07</div><div className="faq-head"><SectionTitle kicker={t.faqK} title={t.faqT}/></div><div className="faq-list">{t.faqs.map(f=><details key={f[0]}><summary>{f[0]}</summary><p>{f[1]}</p></details>)}</div></section>
-    <section className="enquire section" id="enquire"><div className="section-index light">07 / 07</div><Reveal className="enquire-copy"><SectionTitle kicker={t.formK} title={t.formT} light/><p>{t.formP}</p></Reveal><form className="contact-form" onSubmit={e=>e.preventDefault()}><label><span>{t.name}</span><input required name="name"/></label><label><span>{t.email}</span><input required type="email" name="email"/></label><label><span>{t.phone}</span><input name="phone"/></label><label><span>{t.interest}</span><select name="interest"><option>Private introduction</option><option>Individual falcon ownership</option><option>Multi-falcon programme</option></select></label><div className="form-submit full"><p>{t.privacy}</p><motion.button whileTap={{scale:.98}} className="button button-gold" type="submit">{t.consult}</motion.button></div></form></section>
+    <section className="enquire section" id="enquire"><div className="section-index light">07 / 07</div><Reveal className="enquire-copy"><SectionTitle kicker={t.formK} title={t.formT} light/><p>{t.formP}</p></Reveal><form className="contact-form" onSubmit={e=>e.preventDefault()}><label><span>{t.name}</span><input required name="name"/></label><label><span>{t.email}</span><input required type="email" name="email"/></label><label><span>{t.phone}</span><input name="phone"/></label><label><span>{t.interest}</span><select name="interest"><option>Private introduction</option><option>Individual falcon ownership</option><option>Multi-falcon programme</option></select></label><div className="form-submit full"><p>{t.privacy}</p><button className="button button-gold" type="submit">{t.consult}</button></div></form></section>
   </main><a className="mobile-sticky-cta" href="#enquire">{t.consult}</a><footer><a className="brand footer-brand" href="#top"><img className="footer-logo" src={asset('falaq-logo-transparent.png')} alt="Falaq Falcon"/></a><div className="footer-note"><p>Dubai · United Arab Emirates</p><p>A private ownership concept for the guardians of tomorrow.</p></div><div className="footer-legal"><p>© {new Date().getFullYear()} Falaq Falcon</p><a href="#enquire">Contact</a></div></footer></>
 }
 
