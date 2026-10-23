@@ -5,6 +5,7 @@
     "Use the existing fixed spider graph as a performance frame rather than changing metrics between slides.",
     "The performance carousel contains exactly two falcon portrait banners with explicit names, visible arrows, and a two-tab navigation bar.",
     "Portrait transitions use a soft crossfade and scale while navigation remains high contrast and keyboard accessible.",
-    "Meet the Falcons uses a 21st-inspired editorial reveal: staggered card entrances, vertical image masks, restrained hover zoom, and a single gold scan accent with reduced-motion support."
+    "Meet the Falcons uses a 21st-inspired editorial reveal: staggered card entrances, vertical image masks, restrained hover zoom, and a single gold scan accent with reduced-motion support.",
+    "Meet the Falcons keeps its title and supporting copy in one compact editorial row, followed immediately by a wider film, avoiding ceremonial whitespace that does not support the content."
   ]
 }
